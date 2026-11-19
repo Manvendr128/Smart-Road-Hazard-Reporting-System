@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Road Hazard System</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+
+
+    <header class="navbar">
+        <a href="#home" class="logo">
+            <span class="logo-icon">🛣️</span>
+            <span>
+                Smart Road<br>
+                <strong>Hazard System</strong>
+            </span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="home.html" class="active">Home</a>
+            <a href="features.html">Features</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+
+        <div class="nav-buttons">
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="register.html" class="signup-btn">Sign Up</a>
+        </div>
+    </header>
+
+
+<script src="./script.js"></script>
+<script>
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        localStorage.setItem("isLoggedIn", "true");
+
+        alert("Demo login successful!");
+        window.location.href = "/features";
+    });
+</script>
+
+    <main class="page-main">
+        <div class="auth-container">
+
+            <section class="auth-info">
+                <a href="index.html" class="brand">
+                    <span class="brand-mark">SR</span>
+                    <span>Smart Road <strong>Hazard System</strong></span>
+                </a>
+
+                <div class="info-content">
+                    <span class="eyebrow">SAFER ROADS, BETTER TOMORROW</span>
+
+                    <h1>Your actions can make<br>
+                        <span>roads safer.</span>
+                    </h1>
+
+                    <p>
+                        Sign in to report road hazards, share important
+                        information and help build safer communities.
+                    </p>
+
+                    <div class="info-points">
+                        <div class="info-item">
+                            <span class="check">✓</span>
+                            <span>Report road problems with ease</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="check">✓</span>
+                            <span>Share hazard photos and locations</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="check">✓</span>
+                            <span>Support safer local roads</span>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="side-note">Together, we can make a difference.</p>
+            </section>
+
+            <section class="auth-form">
+                <div class="form-heading">
+                    <div class="form-symbol">↗</div>
+                    <h2>Welcome back</h2>
+                    <p>Enter your details to access your account.</p>
+                </div>
+
+
+
+<form id="loginForm" action="/login" method="POST">
+
+    <div class="form-group">
+        <label for="email">Email address</label>
+        <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+        >
+    </div>
+
+    <p id="loginError" class="error-message" role="alert"></p>
+
+    <button type="submit" class="auth-btn">
+        Sign In <span>→</span>
+    </button>
+
+</form>
+
+
+
+
+                <div class="form-divider">
+                    <span>NEW TO OUR PLATFORM?</span>
+                </div>
+
+                <p class="switch-text">
+                    Don't have an account?
+                    <a href="register.html">Create an account</a>
+                </p>
+
+                <a href="home.html" class="back-link">← Back to Home</a>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div>
+                <h3>Smart Road Hazard System</h3>
+                <p>Technology for safer roads and stronger communities.</p>
+            </div>
+            <p class="copyright">
+                © 2026 Smart Road Hazard System. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
