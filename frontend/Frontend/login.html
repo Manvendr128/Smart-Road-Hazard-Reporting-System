@@ -4,15 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Road Hazard System</title>
+    <title>Smart Road Hazard System - Login</title>
     <link rel="stylesheet" href="login.css">
+    <script src="api.js"></script>
 </head>
 
 <body>
 
 
     <header class="navbar">
-        <a href="#home" class="logo">
+        <a href="home.html" class="logo">
             <span class="logo-icon">🛣️</span>
             <span>
                 Smart Road<br>
@@ -33,36 +34,23 @@
         </div>
     </header>
 
-
-<script src="./script.js"></script>
-<script>
-    document.getElementById("loginForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        localStorage.setItem("isLoggedIn", "true");
-
-        alert("Demo login successful!");
-        window.location.href = "/features";
-    });
-</script>
-
     <main class="page-main">
         <div class="auth-container">
 
             <section class="auth-info">
-                <a href="index.html" class="brand">
+                <a href="home.html" class="brand">
                     <span class="brand-mark">SR</span>
                     <span>Smart Road <strong>Hazard System</strong></span>
                 </a>
 
                 <div class="info-content">
-                    <span class="eyebrow">SAFER ROADS, BETTER TOMORROW</span>
+                    <span class="eyebrow" id="authEyebrow">SAFER ROADS, BETTER TOMORROW</span>
 
-                    <h1>Your actions can make<br>
+                    <h1 id="authInfoHeading">Your actions can make<br>
                         <span>roads safer.</span>
                     </h1>
 
-                    <p>
+                    <p id="authInfoDesc">
                         Sign in to report road hazards, share important
                         information and help build safer communities.
                     </p>
@@ -70,73 +58,79 @@
                     <div class="info-points">
                         <div class="info-item">
                             <span class="check">✓</span>
-                            <span>Report road problems with ease</span>
+                            <span id="infoPoint1">Report road problems with ease</span>
                         </div>
                         <div class="info-item">
                             <span class="check">✓</span>
-                            <span>Share hazard photos and locations</span>
+                            <span id="infoPoint2">Share hazard photos and locations</span>
                         </div>
                         <div class="info-item">
                             <span class="check">✓</span>
-                            <span>Support safer local roads</span>
+                            <span id="infoPoint3">Support safer local roads</span>
                         </div>
                     </div>
                 </div>
 
-                <p class="side-note">Together, we can make a difference.</p>
+                <p class="side-note" id="authSideNote">Together, we can make a difference.</p>
             </section>
 
             <section class="auth-form">
-                <div class="form-heading">
-                    <div class="form-symbol">↗</div>
-                    <h2>Welcome back</h2>
-                    <p>Enter your details to access your account.</p>
+                <!-- Separate Role Switcher / Tabs -->
+                <div class="auth-role-switcher" style="display:flex; gap:8px; margin-bottom:20px; background:#f1f5f9; padding:4px; border-radius:10px; border:1px solid #e2e8f0;">
+                    <button type="button" id="tabCitizen" class="role-tab active" style="flex:1; padding:10px 14px; border:none; border-radius:8px; font-weight:700; font-size:13px; cursor:pointer; background:#ffffff; color:#102a43; box-shadow:0 2px 4px rgba(0,0,0,0.06); transition:all 0.2s;">
+                        👤 Citizen Login
+                    </button>
+                    <button type="button" id="tabAdmin" class="role-tab" style="flex:1; padding:10px 14px; border:none; border-radius:8px; font-weight:700; font-size:13px; cursor:pointer; background:transparent; color:#64748b; transition:all 0.2s;">
+                        🛡️ Admin Login
+                    </button>
                 </div>
 
+                <div class="form-heading">
+                    <div class="form-symbol" id="formSymbol">↗</div>
+                    <h2 id="formHeadingTitle">Welcome back</h2>
+                    <p id="formHeadingSubtitle">Enter your details to access your account.</p>
+                </div>
 
+                <form id="loginForm" novalidate>
 
-<form id="loginForm" action="/login" method="POST">
+                    <div class="form-group">
+                        <label for="email" id="emailLabel">Email address</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+                    </div>
 
-    <div class="form-group">
-        <label for="email">Email address</label>
-        <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="you@example.com"
-            autocomplete="email"
-            required
-        >
-    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+                    </div>
 
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Enter your password"
-            autocomplete="current-password"
-            required
-        >
-    </div>
+                    <p id="loginSuccess" class="success-message" role="status" style="display:none; color:#15803d; background:#e9f9ef; padding:10px 14px; border-radius:8px; font-size:13px; margin-bottom:14px; border:1px solid #bbf7d0;"></p>
+                    <p id="loginError" class="error-message" role="alert" style="display:none;"></p>
 
-    <p id="loginError" class="error-message" role="alert"></p>
+                    <button type="submit" id="submitBtn" class="auth-btn">
+                        <span id="btnText">Sign In</span> <span>→</span>
+                    </button>
 
-    <button type="submit" class="auth-btn">
-        Sign In <span>→</span>
-    </button>
+                </form>
 
-</form>
-
-
-
-
-                <div class="form-divider">
+                <div class="form-divider" id="signupDivider">
                     <span>NEW TO OUR PLATFORM?</span>
                 </div>
 
-                <p class="switch-text">
+                <p class="switch-text" id="signupSwitch">
                     Don't have an account?
                     <a href="register.html">Create an account</a>
                 </p>
@@ -159,6 +153,200 @@
         </div>
     </footer>
 
-</body>
+    <!-- Client-side authentication logic -->
+    <script>
+        let currentMode = "user"; // "user" or "admin"
 
+        const tabCitizen = document.getElementById("tabCitizen");
+        const tabAdmin = document.getElementById("tabAdmin");
+        const formHeadingTitle = document.getElementById("formHeadingTitle");
+        const formHeadingSubtitle = document.getElementById("formHeadingSubtitle");
+        const formSymbol = document.getElementById("formSymbol");
+        const btnText = document.getElementById("btnText");
+        const signupDivider = document.getElementById("signupDivider");
+        const signupSwitch = document.getElementById("signupSwitch");
+        const emailLabel = document.getElementById("emailLabel");
+
+        const authEyebrow = document.getElementById("authEyebrow");
+        const authInfoHeading = document.getElementById("authInfoHeading");
+        const authInfoDesc = document.getElementById("authInfoDesc");
+        const infoPoint1 = document.getElementById("infoPoint1");
+        const infoPoint2 = document.getElementById("infoPoint2");
+        const infoPoint3 = document.getElementById("infoPoint3");
+        const authSideNote = document.getElementById("authSideNote");
+
+        const form = document.getElementById("loginForm");
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const loginError = document.getElementById("loginError");
+        const loginSuccess = document.getElementById("loginSuccess");
+        const submitBtn = document.getElementById("submitBtn");
+
+        function showError(msg) {
+            loginError.textContent = msg;
+            loginError.style.display = "block";
+            loginSuccess.style.display = "none";
+        }
+
+        function showSuccess(msg) {
+            loginSuccess.textContent = msg;
+            loginSuccess.style.display = "block";
+            loginError.style.display = "none";
+        }
+
+        function clearMessages() {
+            loginError.textContent = "";
+            loginError.style.display = "none";
+            loginSuccess.textContent = "";
+            loginSuccess.style.display = "none";
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            clearMessages();
+
+            if (mode === "admin") {
+                tabAdmin.style.background = "#0b1f3a";
+                tabAdmin.style.color = "#ffffff";
+                tabAdmin.style.boxShadow = "0 2px 6px rgba(11, 31, 58, 0.15)";
+                tabCitizen.style.background = "transparent";
+                tabCitizen.style.color = "#64748b";
+                tabCitizen.style.boxShadow = "none";
+
+                formSymbol.textContent = "🛡️";
+                formSymbol.style.background = "#e0e7ff";
+                formSymbol.style.color = "#3730a3";
+                formHeadingTitle.textContent = "Admin Portal Sign In";
+                formHeadingSubtitle.textContent = "Restricted access for municipal administrators and supervisors.";
+                emailLabel.textContent = "Administrator Email";
+                btnText.textContent = "Sign In to Admin Portal";
+
+                signupDivider.style.display = "none";
+                signupSwitch.innerHTML = `<span style="color:#64748b;">Admin accounts are provisioned through trusted administrative channels.</span>`;
+
+                authEyebrow.textContent = "ADMINISTRATIVE CONTROL";
+                authInfoHeading.innerHTML = `Hazard Verification &<br><span>Municipal Action</span>`;
+                authInfoDesc.textContent = "Sign in with your administrative account to review road hazard complaints, coordinate repair work, and update resolution statuses.";
+                infoPoint1.textContent = "Review citizen road hazard submissions";
+                infoPoint2.textContent = "Verify photos and GPS road coordinates";
+                infoPoint3.textContent = "Track hazard statuses and resolution reports";
+                authSideNote.textContent = "Authorized Department Access Only";
+            } else {
+                tabCitizen.style.background = "#ffffff";
+                tabCitizen.style.color = "#102a43";
+                tabCitizen.style.boxShadow = "0 2px 4px rgba(0,0,0,0.06)";
+                tabAdmin.style.background = "transparent";
+                tabAdmin.style.color = "#64748b";
+                tabAdmin.style.boxShadow = "none";
+
+                formSymbol.textContent = "↗";
+                formSymbol.style.background = "#e9f9ef";
+                formSymbol.style.color = "#15803d";
+                formHeadingTitle.textContent = "Welcome back";
+                formHeadingSubtitle.textContent = "Enter your details to access your account.";
+                emailLabel.textContent = "Email address";
+                btnText.textContent = "Sign In";
+
+                signupDivider.style.display = "flex";
+                signupSwitch.innerHTML = `Don't have an account? <a href="register.html">Create an account</a>`;
+
+                authEyebrow.textContent = "SAFER ROADS, BETTER TOMORROW";
+                authInfoHeading.innerHTML = `Your actions can make<br><span>roads safer.</span>`;
+                authInfoDesc.textContent = "Sign in to report road hazards, share important information and help build safer communities.";
+                infoPoint1.textContent = "Report road problems with ease";
+                infoPoint2.textContent = "Share hazard photos and locations";
+                infoPoint3.textContent = "Support safer local roads";
+                authSideNote.textContent = "Together, we can make a difference.";
+            }
+        }
+
+        tabCitizen.addEventListener("click", () => setMode("user"));
+        tabAdmin.addEventListener("click", () => setMode("admin"));
+
+        // Check query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get("mode") === "admin") {
+            setMode("admin");
+        }
+        if (urlParams.get("registered") === "true") {
+            showSuccess("Registration successful! Please sign in with your email and password.");
+        }
+        if (urlParams.get("session_expired") === "true") {
+            showError("Your session has expired or is invalid. Please sign in again.");
+        }
+        if (urlParams.get("admin_denied") === "true") {
+            setMode("admin");
+            showError("Access denied: You must be signed in as an administrator to access the Admin Dashboard.");
+        }
+
+        form.addEventListener("submit", async function(event) {
+            event.preventDefault();
+            clearMessages();
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            if (!email || !password) {
+                showError("Please enter both email and password.");
+                return;
+            }
+
+            submitBtn.disabled = true;
+            const originalBtnHtml = submitBtn.innerHTML;
+            submitBtn.innerHTML = "Signing in... <span>⏳</span>";
+
+            try {
+                const response = await authAPI.login({ email, password });
+
+                if (response.ok && response.data && response.data.user) {
+                    const authenticatedUser = response.data.user;
+
+                    // Step 5 Requirement: Separate Admin Login Verification
+                    if (currentMode === "admin") {
+                        if (authenticatedUser.role !== "admin") {
+                            // User is a normal user trying to access via Admin interface
+                            // Strictly deny access and clear any saved session
+                            authAPI.clearAuth();
+                            showError("Access denied. This account does not have administrative privileges. Please use Citizen Login.");
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalBtnHtml;
+                            return;
+                        }
+
+                        // Valid Admin Login -> navigate to Admin Dashboard
+                        showSuccess("Admin authentication successful! Opening Admin Dashboard...");
+                        setTimeout(() => {
+                            window.location.href = "admin.html";
+                        }, 800);
+                        return;
+                    }
+
+                    // User Mode Login:
+                    if (authenticatedUser.role === "admin") {
+                        // Admin logging in via citizen form -> navigate to Admin Dashboard
+                        showSuccess("Welcome, Administrator! Opening Admin Dashboard...");
+                        setTimeout(() => {
+                            window.location.href = "admin.html";
+                        }, 800);
+                    } else {
+                        // Normal user -> navigate to user dashboard (features.html)
+                        showSuccess("Login successful! Redirecting to features...");
+                        setTimeout(() => {
+                            window.location.href = "features.html";
+                        }, 800);
+                    }
+                } else {
+                    showError(response.message || "Invalid email or password. Please try again.");
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnHtml;
+                }
+            } catch (err) {
+                console.error("Login submission error:", err);
+                showError("An unexpected error occurred while communicating with the server.");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHtml;
+            }
+        });
+    </script>
+</body>
 </html>

@@ -1,0 +1,22 @@
+{
+  "name": "smart-road-hazard-reporting-system",
+  "version": "1.0.0",
+  "description": "Smart Road Hazard Reporting System - Full-Stack Academic Project",
+  "scripts": {
+    "start": "node run_all_tests.js",
+    "backend": "npm start --prefix Backend",
+    "frontend": "npm start --prefix frontend",
+    "test": "node run_all_tests.js",
+    "seed:admin": "npm run seed:admin --prefix Backend"
+  },
+  "keywords": [
+    "road-hazard",
+    "safety",
+    "reporting",
+    "express",
+    "mongodb",
+    "cloudinary"
+  ],
+  "author": "Smart Road Hazard System Team",
+  "license": "ISC"
+}

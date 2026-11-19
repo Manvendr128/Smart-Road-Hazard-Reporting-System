@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Road Hazard System</title>
+    <title>Smart Road Hazard System - Features</title>
     <link rel="stylesheet" href="style2.css">
-    <script src="./script.js"></script>
+    <script src="api.js"></script>
 </head>
 <body>
 
     <!-- Header -->
     <header class="navbar">
-        <a href="#home" class="logo">
+        <a href="home.html" class="logo">
             <span class="logo-icon">🛣️</span>
             <span>
                 Smart Road<br>
@@ -32,6 +32,55 @@
             <a href="register.html" class="signup-btn">Sign Up</a>
         </div>
     </header>
+
+    <!-- User Profile Banner (Populated via GET /api/users/profile) -->
+    <section id="userProfileBanner" style="display:none; background:#f0fdf4; border-bottom:1px solid #bbf7d0; padding:16px 5%;">
+        <div style="max-width:1200px; margin:auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <div style="width:42px; height:42px; border-radius:50%; background:#22c55e; color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:bold;" id="userAvatar">
+                    👤
+                </div>
+                <div>
+                    <h3 style="font-size:16px; color:#14532d; margin-bottom:2px;">
+                        Welcome back, <span id="profileDisplayName">Citizen</span>!
+                    </h3>
+                    <p style="font-size:12px; color:#166534; margin:0;">
+                        Email: <strong id="profileDisplayEmail">-</strong> &nbsp;|&nbsp; 
+                        Phone: <strong id="profileDisplayPhone">-</strong> &nbsp;|&nbsp; 
+                        Role: <span id="profileDisplayRole" style="text-transform:uppercase; font-weight:700; background:#dcfce7; padding:2px 8px; border-radius:12px; font-size:11px;">USER</span>
+                    </p>
+                </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <a href="admin.html" id="adminPortalBtn" style="display:none; text-decoration:none; padding:7px 14px; font-size:12px; background:#1e3a8a; color:#ffffff; border-radius:8px; font-weight:700;">
+                    🛡️ Admin Dashboard
+                </a>
+                <a href="report.html" id="reportHazardBtn" class="auth-btn" style="text-decoration:none; padding:7px 14px; font-size:12px; background:#16a34a;">
+                    + Report a Hazard
+                </a>
+                <a href="my-reports.html" id="myReportsBtn" style="text-decoration:none; padding:7px 14px; font-size:12px; background:#ffffff; color:#14532d; border:1px solid #bbf7d0; border-radius:8px; font-weight:700;">
+                    My Reports
+                </a>
+                <button type="button" id="bannerLogoutBtn" style="background:#dc2626; color:#ffffff; border:none; padding:7px 14px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Callout Notice (shown when admin visits Features) -->
+    <div id="adminNoticeCallout" style="display:none; background:#eff6ff; border-bottom:2px solid #3b82f6; padding:14px 5%;">
+        <div style="max-width:1200px; margin:auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div>
+                <strong style="color:#1e3a8a; font-size:14px;">🛡️ Administrator Access Enabled</strong>
+                <p style="margin:2px 0 0; color:#1e40af; font-size:13px;">This page displays the citizen features overview. To review, verify, and approve citizen road hazard reports, open the <strong>Admin Dashboard</strong>.</p>
+            </div>
+            <a href="admin.html" style="background:#1d4ed8; color:#ffffff; text-decoration:none; padding:9px 18px; border-radius:8px; font-weight:700; font-size:13px; box-shadow:0 2px 6px rgba(29, 78, 216, 0.3);">
+                Go to Admin Dashboard →
+            </a>
+        </div>
+    </div>
+
      <!-- Hero Section -->
     <section class="features-hero">
         <div class="hero-content">
@@ -126,7 +175,7 @@
                     <li>Attach images to a complaint</li>
                 </ul>
                 
-<a href="/feature/photo-upload" class="use-btn">Use Feature →</a>
+<a href="report.html" class="use-btn">Use Feature →</a>
 
 
             </article>
@@ -148,7 +197,7 @@
                 </ul>
                 
 
-<a href="/feature/location" class="use-btn">Use Feature →</a>
+<a href="report.html" class="use-btn">Use Feature →</a>
 
             </article>
 
@@ -167,7 +216,7 @@
                     <li>Select a hazard category</li>
                     <li>Submit complaint details</li>
                 </ul>
-<a href="/feature/complaint" class="use-btn">Use Feature →</a>
+<a href="report.html" class="use-btn">Use Feature →</a>
 
 
 
@@ -189,7 +238,7 @@
                     <li>See available resolution updates</li>
                 </ul>
                 
-<a href="/feature/status" class="use-btn">Use Feature →</a>
+<a href="my-reports.html" class="use-btn">Use Feature →</a>
 
     
 
@@ -211,7 +260,7 @@
                     <li>Updates when a report changes</li>
                 </ul>
                 
-<a href="/feature/notifications" class="use-btn">Use Feature →</a>
+<a href="my-reports.html" class="use-btn">Use Feature →</a>
 
 
 
@@ -233,7 +282,7 @@
                     <li>Access to previous submissions</li>
                 </ul>
                 
-<a href="/feature/history" class="use-btn">Use Feature →</a>
+<a href="my-reports.html" class="use-btn">Use Feature →</a>
 
             </article>
 
@@ -294,7 +343,7 @@
                     <li>View hazard and resolution statistics</li>
                 </ul>
                 
-<a href="/feature/admin" class="use-btn">Use Feature →</a>
+<a href="admin.html" class="use-btn">Use Feature →</a>
             </article>
 
         </div>
@@ -416,5 +465,49 @@
             <p>Designed for a safer tomorrow.</p>
         </div>
     </footer>
-</head>
+
+    <!-- Profile Integration Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", async function() {
+            // Check if user is authenticated
+            if (AuthStorage.isAuthenticated()) {
+                const banner = document.getElementById("userProfileBanner");
+                const nameEl = document.getElementById("profileDisplayName");
+                const emailEl = document.getElementById("profileDisplayEmail");
+                const phoneEl = document.getElementById("profileDisplayPhone");
+                const roleEl = document.getElementById("profileDisplayRole");
+                const logoutBtn = document.getElementById("bannerLogoutBtn");
+
+                logoutBtn.addEventListener("click", () => {
+                    authAPI.logout();
+                });
+
+                // Fetch fresh profile from protected GET /api/users/profile
+                try {
+                    const result = await authAPI.getProfile();
+                    if (result.ok && result.data && result.data.user) {
+                        const user = result.data.user;
+                        nameEl.textContent = user.name || "Citizen";
+                        emailEl.textContent = user.email || "-";
+                        phoneEl.textContent = user.phone || "-";
+                        roleEl.textContent = (user.role || "user").toUpperCase();
+                        banner.style.display = "block";
+
+                        if (user.role === "admin") {
+                            const adminBtn = document.getElementById("adminPortalBtn");
+                            const callout = document.getElementById("adminNoticeCallout");
+                            if (adminBtn) adminBtn.style.display = "inline-block";
+                            if (callout) callout.style.display = "block";
+                        }
+                    } else if (result.status === 401) {
+                        // Session expired
+                        authAPI.clearAuth();
+                    }
+                } catch (e) {
+                    console.error("Failed to fetch user profile:", e);
+                }
+            }
+        });
+    </script>
 </body>
+</html>

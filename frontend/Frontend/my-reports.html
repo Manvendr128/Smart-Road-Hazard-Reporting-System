@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Hazard Reports - Smart Road Hazard System</title>
+    <link rel="stylesheet" href="style1.css">
+    <link rel="stylesheet" href="login.css">
+    <script src="api.js"></script>
+    <style>
+        .reports-container {
+            max-width: 1140px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+        .page-header-banner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 28px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 18px;
+        }
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        .report-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .report-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+        .report-card-img-wrapper {
+            position: relative;
+            height: 180px;
+            background: #f1f5f9;
+            overflow: hidden;
+        }
+        .report-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .report-card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            gap: 10px;
+        }
+        .badge-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 14px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .status-Pending {
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fde68a;
+        }
+        .status-Verified {
+            background: #dbeafe;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+        }
+        .status-In-Progress {
+            background: #ede9fe;
+            color: #6d28d9;
+            border: 1px solid #ddd6fe;
+        }
+        .status-Resolved {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+        .status-Rejected {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+        .badge-severity {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .sev-Low { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+        .sev-Medium { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+        .sev-High { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+        .empty-state-box {
+            text-align: center;
+            background: #ffffff;
+            border: 1px dashed #cbd5e1;
+            border-radius: 14px;
+            padding: 60px 20px;
+            margin: 20px 0;
+        }
+        .view-btn {
+            display: block;
+            text-align: center;
+            background: #0f172a;
+            color: #ffffff;
+            padding: 10px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: auto;
+            transition: background 0.2s;
+        }
+        .view-btn:hover {
+            background: #1e293b;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <a href="home.html" class="logo">
+            <span class="logo-icon">🛣️</span>
+            <span>
+                Smart Road<br>
+                <strong>Hazard System</strong>
+            </span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="features.html">Features</a>
+            <a href="report.html">Report Hazard</a>
+            <a href="my-reports.html" class="active">My Reports</a>
+            <a href="about.html">About Us</a>
+        </nav>
+
+        <div class="nav-buttons">
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="register.html" class="signup-btn">Sign Up</a>
+        </div>
+    </header>
+
+    <main class="reports-container">
+        <!-- Page Header -->
+        <div class="page-header-banner">
+            <div>
+                <span style="color:#16a34a; font-size:12px; font-weight:700; letter-spacing:1px;">CITIZEN REPORTING ACTIVITY</span>
+                <h1 style="font-size:28px; color:#102a43; margin:4px 0 6px;">My Submitted Road Hazard Reports</h1>
+                <p style="color:#64748b; font-size:13px; margin:0;">
+                    Track real-time verification and repair status updates from municipal authorities.
+                </p>
+            </div>
+            <div>
+                <a href="report.html" class="auth-btn" style="text-decoration:none; padding:10px 18px; font-size:13px;">
+                    + Report New Hazard
+                </a>
+            </div>
+        </div>
+
+        <!-- Feedback & Alerts -->
+        <div id="loadingState" style="text-align:center; padding:60px 20px; color:#64748b;">
+            <div style="font-size:32px; margin-bottom:10px;">⏳</div>
+            <h3>Loading your hazard reports from database...</h3>
+        </div>
+
+        <div id="errorState" style="display:none; text-align:center; padding:40px 20px; background:#fef2f2; border:1px solid #fecaca; border-radius:12px; color:#b91c1c;">
+            <h3>Failed to load reports</h3>
+            <p id="errorMessageText"></p>
+            <button type="button" onclick="loadMyReports()" style="margin-top:12px; padding:8px 16px; background:#b91c1c; color:#fff; border:none; border-radius:6px; cursor:pointer;">
+                Retry
+            </button>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state-box" style="display:none;">
+            <div style="font-size:42px; margin-bottom:12px;">🛣️</div>
+            <h2 style="color:#102a43; font-size:22px; margin-bottom:8px;">No Road Hazard Reports Found</h2>
+            <p style="color:#64748b; max-width:480px; margin:0 auto 20px; font-size:13px;">
+                You haven't reported any potholes or road defects yet. Help your local community by reporting dangerous road conditions.
+            </p>
+            <a href="report.html" class="auth-btn" style="display:inline-block; max-width:240px; text-decoration:none; margin:auto;">
+                Report Your First Hazard →
+            </a>
+        </div>
+
+        <!-- Reports Grid -->
+        <div id="reportsGrid" class="reports-grid" style="display:none;"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer" style="margin-top:60px;">
+        <div class="footer-inner">
+            <div>
+                <h3>Smart Road Hazard System</h3>
+                <p>Real-time citizen reporting and municipal road hazard monitoring.</p>
+            </div>
+            <p class="copyright">
+                © 2026 Smart Road Hazard System. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Report Loading & Rendering Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!AuthStorage.isAuthenticated()) {
+                window.location.href = "login.html?session_expired=true";
+                return;
+            }
+
+            loadMyReports();
+        });
+
+        async function loadMyReports() {
+            const loadingState = document.getElementById("loadingState");
+            const errorState = document.getElementById("errorState");
+            const emptyState = document.getElementById("emptyState");
+            const reportsGrid = document.getElementById("reportsGrid");
+            const errorMessageText = document.getElementById("errorMessageText");
+
+            loadingState.style.display = "block";
+            errorState.style.display = "none";
+            emptyState.style.display = "none";
+            reportsGrid.style.display = "none";
+
+            try {
+                const response = await reportAPI.getMyReports();
+
+                loadingState.style.display = "none";
+
+                if (response.ok && response.data) {
+                    const reports = response.data.reports || [];
+
+                    if (reports.length === 0) {
+                        emptyState.style.display = "block";
+                        return;
+                    }
+
+                    renderReports(reports);
+                    reportsGrid.style.display = "grid";
+                } else {
+                    errorMessageText.textContent = response.message || "Could not retrieve reports from server.";
+                    errorState.style.display = "block";
+                }
+            } catch (err) {
+                console.error("Error fetching reports:", err);
+                loadingState.style.display = "none";
+                errorMessageText.textContent = "Network error. Please ensure the backend is running at http://localhost:5000.";
+                errorState.style.display = "block";
+            }
+        }
+
+        function renderReports(reports) {
+            const grid = document.getElementById("reportsGrid");
+            grid.innerHTML = "";
+
+            reports.forEach(report => {
+                const card = document.createElement("article");
+                card.className = "report-card";
+
+                const statusClass = "status-" + (report.status || "Pending").replace(/\s+/g, "-");
+                const sevClass = "sev-" + (report.severity || "Medium");
+
+                const dateStr = report.createdAt
+                    ? new Date(report.createdAt).toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric' })
+                    : "Recently";
+
+                card.innerHTML = `
+                    <div class="report-card-img-wrapper">
+                        <img src="${escapeHtml(report.imageUrl)}" alt="${escapeHtml(report.category)}" class="report-card-img" onerror="this.src='road-hazard.png';">
+                        <div style="position:absolute; top:12px; right:12px;">
+                            <span class="badge-status ${statusClass}">${escapeHtml(report.status)}</span>
+                        </div>
+                    </div>
+
+                    <div class="report-card-body">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <strong style="color:#0f172a; font-size:16px;">${escapeHtml(report.category)}</strong>
+                            <span class="badge-severity ${sevClass}">${escapeHtml(report.severity)} Severity</span>
+                        </div>
+
+                        <div style="font-size:12px; color:#64748b; font-family:monospace;">
+                            ID: <strong>${escapeHtml(report.reportId || "RPT-...")}</strong>
+                        </div>
+
+                        <p style="font-size:13px; color:#334155; line-height:1.5; margin:4px 0; flex:1;">
+                            ${escapeHtml(truncateText(report.description, 110))}
+                        </p>
+
+                        <div style="font-size:12px; color:#475569; background:#f8fafc; padding:8px 10px; border-radius:6px; border:1px solid #e2e8f0;">
+                            <div>📍 <strong>${escapeHtml(report.address || "Address not provided")}</strong></div>
+                            ${report.landmark ? `<div style="color:#64748b; margin-top:2px;">🏛️ Near ${escapeHtml(report.landmark)}</div>` : ''}
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#94a0b1; margin-top:4px;">
+                            <span>Reported: ${dateStr}</span>
+                            <span>${(report.statusHistory || []).length} Status Update(s)</span>
+                        </div>
+
+                        <a href="report-details.html?id=${escapeHtml(report._id)}" class="view-btn">
+                            View Report Details & History →
+                        </a>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        function truncateText(str, maxLen) {
+            if (!str) return "";
+            if (str.length <= maxLen) return str;
+            return str.substring(0, maxLen) + "...";
+        }
+    </script>
+</body>
+</html>

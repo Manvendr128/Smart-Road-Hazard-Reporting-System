@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report a Road Hazard - Smart Road Hazard System</title>
+    <link rel="stylesheet" href="style1.css">
+    <link rel="stylesheet" href="login.css">
+    <script src="api.js"></script>
+    <style>
+        .report-page-container {
+            max-width: 1040px;
+            margin: 35px auto;
+            display: grid;
+            grid-template-columns: 0.85fr 1.15fr;
+            background: #ffffff;
+            border: 1px solid #e5eaf0;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 18px 55px rgba(11, 31, 58, 0.09);
+        }
+        .report-info {
+            background: linear-gradient(145deg, #0b1f3a, #13405b);
+            color: #ffffff;
+            padding: 38px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 28px;
+        }
+        .report-form-panel {
+            padding: 38px 42px;
+            background: #ffffff;
+        }
+        .file-dropzone {
+            border: 2px dashed #cbd5e1;
+            border-radius: 10px;
+            padding: 24px 18px;
+            text-align: center;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            position: relative;
+        }
+        .file-dropzone:hover, .file-dropzone.dragover {
+            border-color: #22c55e;
+            background: #f0fdf4;
+        }
+        .preview-container {
+            margin-top: 12px;
+            position: relative;
+            display: none;
+            text-align: center;
+        }
+        .preview-img {
+            max-width: 100%;
+            max-height: 220px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            object-fit: cover;
+        }
+        .remove-img-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(220, 38, 38, 0.9);
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .progress-bar-container {
+            width: 100%;
+            background: #e2e8f0;
+            border-radius: 6px;
+            height: 8px;
+            overflow: hidden;
+            margin: 12px 0;
+            display: none;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: #22c55e;
+            transition: width 0.3s ease;
+        }
+        select.form-control, textarea.form-control {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d7dee8;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #172b46;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        select.form-control:focus, textarea.form-control:focus {
+            border-color: #22a653;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12);
+        }
+        @media (max-width: 840px) {
+            .report-page-container {
+                grid-template-columns: 1fr;
+                margin: 20px 15px;
+            }
+            .report-info {
+                padding: 26px;
+            }
+            .report-form-panel {
+                padding: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <a href="home.html" class="logo">
+            <span class="logo-icon">🛣️</span>
+            <span>
+                Smart Road<br>
+                <strong>Hazard System</strong>
+            </span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="features.html">Features</a>
+            <a href="report.html" class="active">Report Hazard</a>
+            <a href="my-reports.html">My Reports</a>
+            <a href="about.html">About Us</a>
+        </nav>
+
+        <div class="nav-buttons">
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="register.html" class="signup-btn">Sign Up</a>
+        </div>
+    </header>
+
+    <main class="page-main">
+        <div class="report-page-container">
+
+            <!-- Left Guidance Info Panel -->
+            <section class="report-info">
+                <div>
+                    <a href="home.html" class="brand" style="margin-bottom:24px;">
+                        <span class="brand-mark">SR</span>
+                        <span>Smart Road <strong>Hazard System</strong></span>
+                    </a>
+
+                    <span class="eyebrow" style="color:#4ade80; font-size:11px; font-weight:700; letter-spacing:1.5px;">COMMUNITY SAFETY PORTAL</span>
+                    <h1 style="font-size:30px; line-height:1.3; margin:16px 0; color:#ffffff;">
+                        Report a Road Hazard.<br>
+                        <span style="color:#4ade80;">Save Lives.</span>
+                    </h1>
+
+                    <p style="color:#d0dbea; font-size:13px; line-height:1.8;">
+                        Your detailed report helps municipal engineers and local road maintenance crews quickly identify, verify, and repair dangerous road conditions.
+                    </p>
+
+                    <div class="info-points" style="margin-top:24px;">
+                        <div class="info-item">
+                            <span class="check">📸</span>
+                            <span>Upload a clear photograph showing the road defect</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="check">📍</span>
+                            <span>Provide the road address & a recognizable landmark</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="check">⚠️</span>
+                            <span>Indicate the hazard category and risk severity</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="check">☁️</span>
+                            <span>Images are securely processed & stored on Cloudinary</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="border-top:1px solid rgba(255,255,255,0.15); padding-top:16px;">
+                    <p style="color:#aebed1; font-size:12px; margin:0;">
+                        Already submitted a report? <a href="my-reports.html" style="color:#4ade80; font-weight:bold; text-decoration:none;">View My Reports →</a>
+                    </p>
+                </div>
+            </section>
+
+            <!-- Right Hazard Submission Form -->
+            <section class="report-form-panel">
+                <div class="form-heading" style="margin-bottom:22px;">
+                    <div class="form-symbol" style="width:40px; height:40px; border-radius:10px; background:#e9f9ef; color:#15803d; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:14px;">
+                        📝
+                    </div>
+                    <h2 style="font-size:24px; color:#102a43; margin-bottom:6px;">Hazard Details</h2>
+                    <p style="color:#64748b; font-size:13px;">Fill in the information below to register a new road safety report.</p>
+                </div>
+
+                <!-- Form submits multipart/form-data to POST /api/reports -->
+                <form id="hazardReportForm" novalidate>
+
+                    <!-- Category -->
+                    <div class="form-group">
+                        <label for="category">Hazard Category *</label>
+                        <select id="category" name="category" class="form-control" required>
+                            <option value="">Select hazard category</option>
+                            <option value="Pothole">🕳️ Pothole</option>
+                            <option value="Damaged Road">🛣️ Damaged Road / Surface Crack</option>
+                            <option value="Road Blockage">🚧 Road Blockage / Obstruction</option>
+                            <option value="Open Manhole">⚠️ Open Manhole / Drain</option>
+                            <option value="Waterlogging">🌊 Waterlogging / Flooding</option>
+                            <option value="Fallen Object">🌲 Fallen Object / Tree Branch</option>
+                            <option value="Other">❓ Other Hazard</option>
+                        </select>
+                    </div>
+
+                    <!-- Severity -->
+                    <div class="form-group">
+                        <label for="severity">Severity Level *</label>
+                        <select id="severity" name="severity" class="form-control" required>
+                            <option value="Low">🟢 Low - Minor inconvenience</option>
+                            <option value="Medium" selected>🟡 Medium - Noticeable hazard / vehicle damage risk</option>
+                            <option value="High">🔴 High - Dangerous / severe accident risk</option>
+                        </select>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="form-group">
+                        <label for="address">Street / Road Address *</label>
+                        <input
+                            type="text"
+                            id="address"
+                            name="address"
+                            placeholder="e.g. Ring Road near Bus Stand, Sector 12"
+                            required
+                        >
+                    </div>
+
+                    <!-- Landmark -->
+                    <div class="form-group">
+                        <label for="landmark">Nearby Landmark (Optional)</label>
+                        <input
+                            type="text"
+                            id="landmark"
+                            name="landmark"
+                            placeholder="e.g. In front of Government Hospital"
+                        >
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group">
+                        <label for="description">Detailed Description *</label>
+                        <textarea
+                            id="description"
+                            name="description"
+                            rows="3"
+                            class="form-control"
+                            placeholder="Describe the hazard size, depth, lane blocked, or any immediate dangers..."
+                            required
+                        ></textarea>
+                    </div>
+
+                    <!-- Photograph Upload (multipart/form-data field: image) -->
+                    <div class="form-group">
+                        <label for="imageFile">Hazard Photograph * (JPG, PNG, WebP - max 5MB)</label>
+                        <div class="file-dropzone" id="dropzone">
+                            <span style="font-size:28px; display:block; margin-bottom:6px;">📸</span>
+                            <strong style="color:#0f172a; font-size:13px; display:block;">Click to choose photo or drag & drop here</strong>
+                            <small style="color:#64748b; font-size:11px;">Supported formats: JPEG, PNG, WEBP (Max: 5 MB)</small>
+                            <input
+                                type="file"
+                                id="imageFile"
+                                name="image"
+                                accept="image/jpeg,image/png,image/webp,image/jpg"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;"
+                                required
+                            >
+                        </div>
+
+                        <!-- Live preview -->
+                        <div class="preview-container" id="previewContainer">
+                            <img id="imagePreview" src="" alt="Hazard preview" class="preview-img">
+                            <button type="button" class="remove-img-btn" id="removeImgBtn" title="Remove image">×</button>
+                            <div style="font-size:12px; color:#475569; margin-top:4px;" id="fileInfo"></div>
+                        </div>
+                    </div>
+
+                    <!-- Upload Progress Bar -->
+                    <div class="progress-bar-container" id="progressBarContainer">
+                        <div class="progress-bar-fill" id="progressBarFill"></div>
+                    </div>
+                    <div id="progressText" style="display:none; font-size:12px; color:#15803d; font-weight:bold; margin-bottom:10px; text-align:center;">
+                        Uploading photograph to Cloudinary...
+                    </div>
+
+                    <!-- Error & Success Messages -->
+                    <p id="reportError" class="error-message" role="alert" style="display:none;"></p>
+                    <p id="reportSuccess" class="success-message" role="status" style="display:none; color:#15803d; background:#e9f9ef; padding:12px 14px; border-radius:8px; font-size:13px; margin-bottom:14px; border:1px solid #bbf7d0;"></p>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="submitReportBtn" class="auth-btn">
+                        <span>Submit Road Hazard Report</span> <span>→</span>
+                    </button>
+
+                </form>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div>
+                <h3>Smart Road Hazard System</h3>
+                <p>Empowering citizens to report road hazards and improve local transport safety.</p>
+            </div>
+            <p class="copyright">
+                © 2026 Smart Road Hazard System. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Form Connection & Submission Logic -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Check authentication
+            if (!AuthStorage.isAuthenticated()) {
+                window.location.href = "login.html?session_expired=true";
+                return;
+            }
+
+            const form = document.getElementById("hazardReportForm");
+            const categorySelect = document.getElementById("category");
+            const severitySelect = document.getElementById("severity");
+            const addressInput = document.getElementById("address");
+            const landmarkInput = document.getElementById("landmark");
+            const descriptionInput = document.getElementById("description");
+            const imageInput = document.getElementById("imageFile");
+            const dropzone = document.getElementById("dropzone");
+            const previewContainer = document.getElementById("previewContainer");
+            const imagePreview = document.getElementById("imagePreview");
+            const removeImgBtn = document.getElementById("removeImgBtn");
+            const fileInfo = document.getElementById("fileInfo");
+            const submitBtn = document.getElementById("submitReportBtn");
+            const errorBox = document.getElementById("reportError");
+            const successBox = document.getElementById("reportSuccess");
+            const progressBarContainer = document.getElementById("progressBarContainer");
+            const progressBarFill = document.getElementById("progressBarFill");
+            const progressText = document.getElementById("progressText");
+
+            let selectedFile = null;
+
+            function showError(msg) {
+                errorBox.textContent = msg;
+                errorBox.style.display = "block";
+                successBox.style.display = "none";
+            }
+
+            function showSuccess(msg) {
+                successBox.innerHTML = msg;
+                successBox.style.display = "block";
+                errorBox.style.display = "none";
+            }
+
+            function clearMessages() {
+                errorBox.textContent = "";
+                errorBox.style.display = "none";
+                successBox.textContent = "";
+                successBox.style.display = "none";
+            }
+
+            // Image selection & live preview
+            imageInput.addEventListener("change", function(e) {
+                handleFileSelect(e.target.files[0]);
+            });
+
+            // Drag and drop events
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropzone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzone.classList.add('dragover');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzone.classList.remove('dragover');
+                }, false);
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                if (dt && dt.files && dt.files[0]) {
+                    handleFileSelect(dt.files[0]);
+                }
+            });
+
+            function handleFileSelect(file) {
+                clearMessages();
+                if (!file) return;
+
+                // Validate image MIME type
+                if (!file.type.startsWith("image/")) {
+                    showError("Please select a valid image file (JPG, PNG, or WebP).");
+                    clearFile();
+                    return;
+                }
+
+                // Validate size (5MB limit)
+                if (file.size > 5 * 1024 * 1024) {
+                    showError("The selected image exceeds the maximum allowed size of 5 MB.");
+                    clearFile();
+                    return;
+                }
+
+                selectedFile = file;
+                fileInfo.textContent = `${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    previewContainer.style.display = "block";
+                    dropzone.style.display = "none";
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function clearFile() {
+                selectedFile = null;
+                imageInput.value = "";
+                imagePreview.src = "";
+                previewContainer.style.display = "none";
+                dropzone.style.display = "block";
+                fileInfo.textContent = "";
+            }
+
+            removeImgBtn.addEventListener("click", clearFile);
+
+            // Form submission
+            form.addEventListener("submit", async function(event) {
+                event.preventDefault();
+                clearMessages();
+
+                const category = categorySelect.value.trim();
+                const severity = severitySelect.value.trim();
+                const address = addressInput.value.trim();
+                const landmark = landmarkInput.value.trim();
+                const description = descriptionInput.value.trim();
+
+                // Validation
+                if (!category) {
+                    showError("Please select a hazard category.");
+                    categorySelect.focus();
+                    return;
+                }
+
+                if (!severity) {
+                    showError("Please select a hazard severity.");
+                    severitySelect.focus();
+                    return;
+                }
+
+                if (!address) {
+                    showError("Please enter the street or road address.");
+                    addressInput.focus();
+                    return;
+                }
+
+                if (!description) {
+                    showError("Please provide a description of the hazard.");
+                    descriptionInput.focus();
+                    return;
+                }
+
+                if (!selectedFile) {
+                    showError("Please upload a photograph of the road hazard.");
+                    dropzone.scrollIntoView({ behavior: 'smooth' });
+                    return;
+                }
+
+                // Prepare FormData for multipart/form-data upload
+                const formData = new FormData();
+                formData.append("category", category);
+                formData.append("severity", severity);
+                formData.append("address", address);
+                formData.append("landmark", landmark);
+                formData.append("description", description);
+                formData.append("image", selectedFile);
+
+                // UI loading state
+                submitBtn.disabled = true;
+                const originalBtnHtml = submitBtn.innerHTML;
+                submitBtn.innerHTML = "Uploading to Cloudinary & Submitting... <span>⏳</span>";
+                progressBarContainer.style.display = "block";
+                progressText.style.display = "block";
+                progressBarFill.style.width = "40%";
+
+                try {
+                    // Send to backend POST /api/reports with multipart/form-data & Bearer JWT
+                    progressBarFill.style.width = "75%";
+                    const response = await reportAPI.createReport(formData);
+
+                    if (response.ok && response.data && response.data.report) {
+                        progressBarFill.style.width = "100%";
+                        const rep = response.data.report;
+
+                        showSuccess(`
+                            <strong>🎉 Report Submitted Successfully!</strong><br>
+                            Your report has been registered with ID: <code>${escapeHtml(rep.reportId)}</code>.<br>
+                            Status is currently: <span style="background:#fef3c7; color:#b45309; padding:2px 8px; border-radius:10px; font-weight:bold;">Pending</span>.<br>
+                            Redirecting to <strong>My Reports</strong>...
+                        `);
+
+                        form.reset();
+                        clearFile();
+
+                        setTimeout(() => {
+                            window.location.href = "my-reports.html";
+                        }, 1800);
+                    } else {
+                        progressBarContainer.style.display = "none";
+                        progressText.style.display = "none";
+                        showError(response.message || "Failed to submit hazard report. Please check your data and try again.");
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnHtml;
+                    }
+                } catch (err) {
+                    console.error("Submission error:", err);
+                    progressBarContainer.style.display = "none";
+                    progressText.style.display = "none";
+                    showError("An unexpected network error occurred while submitting your report.");
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnHtml;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

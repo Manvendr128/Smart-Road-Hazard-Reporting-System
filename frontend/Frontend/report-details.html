@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Details - Smart Road Hazard System</title>
+    <link rel="stylesheet" href="style1.css">
+    <link rel="stylesheet" href="login.css">
+    <script src="api.js"></script>
+    <style>
+        .details-container {
+            max-width: 1040px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+        .details-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            margin-bottom: 30px;
+        }
+        .details-header {
+            padding: 24px 30px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+        .details-img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .info-group {
+            margin-bottom: 16px;
+        }
+        .info-group small {
+            display: block;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .info-group strong {
+            font-size: 15px;
+            color: #0f172a;
+        }
+        /* Status History Timeline */
+        .timeline-section {
+            padding: 24px 30px 35px;
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+        }
+        .timeline-track {
+            position: relative;
+            margin-top: 24px;
+            padding-left: 28px;
+        }
+        .timeline-track::before {
+            content: "";
+            position: absolute;
+            left: 8px;
+            top: 4px;
+            bottom: 4px;
+            width: 2px;
+            background: #e2e8f0;
+        }
+        .timeline-node {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        .timeline-node:last-child {
+            margin-bottom: 0;
+        }
+        .timeline-bullet {
+            position: absolute;
+            left: -28px;
+            top: 2px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 3px solid #22c55e;
+            box-sizing: border-box;
+        }
+        .bullet-Pending { border-color: #f59e0b; background: #fef3c7; }
+        .bullet-Verified { border-color: #3b82f6; background: #dbeafe; }
+        .bullet-In-Progress { border-color: #8b5cf6; background: #ede9fe; }
+        .bullet-Resolved { border-color: #22c55e; background: #dcfce7; }
+        .bullet-Rejected { border-color: #ef4444; background: #fee2e2; }
+        .timeline-content {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 14px 18px;
+        }
+        .badge-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+        .status-Pending { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+        .status-Verified { background: #dbeafe; color: #1d4ed8; border: 1px solid #bfdbfe; }
+        .status-In-Progress { background: #ede9fe; color: #6d28d9; border: 1px solid #ddd6fe; }
+        .status-Resolved { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+        .status-Rejected { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+        @media (max-width: 800px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            .details-header {
+                padding: 18px 20px;
+            }
+            .timeline-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <a href="home.html" class="logo">
+            <span class="logo-icon">🛣️</span>
+            <span>
+                Smart Road<br>
+                <strong>Hazard System</strong>
+            </span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="features.html">Features</a>
+            <a href="report.html">Report Hazard</a>
+            <a href="my-reports.html" class="active">My Reports</a>
+            <a href="about.html">About Us</a>
+        </nav>
+
+        <div class="nav-buttons">
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="register.html" class="signup-btn">Sign Up</a>
+        </div>
+    </header>
+
+    <main class="details-container">
+        <!-- Back Navigation -->
+        <div style="margin-bottom:20px;">
+            <a href="my-reports.html" style="color:#0f172a; text-decoration:none; font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:6px;">
+                ← Back to My Reports
+            </a>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" style="text-align:center; padding:80px 20px; color:#64748b;">
+            <div style="font-size:32px; margin-bottom:10px;">⏳</div>
+            <h3>Loading report details from database...</h3>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" style="display:none; text-align:center; padding:50px 20px; background:#fef2f2; border:1px solid #fecaca; border-radius:14px; color:#b91c1c;">
+            <div style="font-size:38px; margin-bottom:10px;">⚠️</div>
+            <h2 id="errorTitle">Report Error</h2>
+            <p id="errorText" style="max-width:500px; margin:10px auto 20px; font-size:14px;"></p>
+            <a href="my-reports.html" class="auth-btn" style="display:inline-block; max-width:200px; text-decoration:none; margin:auto;">
+                Return to My Reports
+            </a>
+        </div>
+
+        <!-- Report Details Card -->
+        <div id="detailsCard" class="details-card" style="display:none;">
+            <!-- Header -->
+            <div class="details-header">
+                <div>
+                    <span style="color:#64748b; font-size:11px; font-weight:700; text-transform:uppercase;">ROAD HAZARD COMPLAINT</span>
+                    <h1 style="font-size:24px; color:#102a43; margin:2px 0 0;" id="reportIdHeading">RPT-XXXXXXXX</h1>
+                </div>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <span id="currentStatusBadge" class="badge-status status-Pending">Pending</span>
+                </div>
+            </div>
+
+            <!-- Body Grid -->
+            <div class="details-grid">
+                <!-- Left: Photograph -->
+                <div>
+                    <img id="hazardImage" src="" alt="Road Hazard Photograph" class="details-img">
+                    <div style="margin-top:10px; font-size:12px; color:#64748b; text-align:center;">
+                        Cloudinary Image URL: <a id="cloudinaryLink" href="" target="_blank" rel="noopener noreferrer" style="color:#168743; word-break:break-all;">View High-Res Photo ↗</a>
+                    </div>
+                </div>
+
+                <!-- Right: Information fields -->
+                <div>
+                    <div class="info-group">
+                        <small>Hazard Category</small>
+                        <strong id="repCategory" style="font-size:18px;">-</strong>
+                    </div>
+
+                    <div class="info-group">
+                        <small>Severity Level</small>
+                        <span id="repSeverity" style="font-weight:700;">-</span>
+                    </div>
+
+                    <div class="info-group">
+                        <small>Road / Street Address</small>
+                        <div id="repAddress" style="color:#0f172a; font-weight:600; line-height:1.5;">-</div>
+                    </div>
+
+                    <div class="info-group" id="landmarkGroup">
+                        <small>Nearby Landmark</small>
+                        <div id="repLandmark" style="color:#475569;">-</div>
+                    </div>
+
+                    <div class="info-group">
+                        <small>Problem Description</small>
+                        <div id="repDescription" style="color:#334155; line-height:1.6; background:#f8fafc; padding:12px; border-radius:8px; border:1px solid #e2e8f0; font-size:13px;">-</div>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:20px; padding-top:16px; border-top:1px solid #f1f5f9;">
+                        <div class="info-group">
+                            <small>Submitted By</small>
+                            <span id="repUserName" style="font-size:13px; font-weight:600;">-</span>
+                        </div>
+                        <div class="info-group">
+                            <small>Date Registered</small>
+                            <span id="repCreatedAt" style="font-size:13px; font-weight:600;">-</span>
+                        </div>
+                    </div>
+
+                    <div id="adminRemarksBox" style="display:none; margin-top:16px; background:#eff6ff; border:1px solid #bfdbfe; padding:12px; border-radius:8px;">
+                        <small style="color:#1d4ed8; font-weight:700;">MUNICIPAL ADMIN REMARK</small>
+                        <p id="adminRemarksText" style="color:#1e40af; font-size:13px; margin:4px 0 0;"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline Status History Section -->
+            <section class="timeline-section">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3 style="font-size:18px; color:#102a43; margin:0;">Status Tracking History</h3>
+                    <small style="color:#64748b;" id="historyCount">0 entries</small>
+                </div>
+                <p style="color:#64748b; font-size:13px; margin:4px 0 0;">Chronological verification and repair workflow updates.</p>
+
+                <div class="timeline-track" id="timelineTrack"></div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div>
+                <h3>Smart Road Hazard System</h3>
+                <p>Tracking road safety and hazard resolution in real-time.</p>
+            </div>
+            <p class="copyright">
+                © 2026 Smart Road Hazard System. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Details Loading & Rendering Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!AuthStorage.isAuthenticated()) {
+                window.location.href = "login.html?session_expired=true";
+                return;
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const reportMongoId = urlParams.get("id");
+
+            if (!reportMongoId) {
+                showError("Missing Report Identifier", "No report ID was provided in the request URL.");
+                return;
+            }
+
+            loadReportDetails(reportMongoId);
+        });
+
+        async function loadReportDetails(mongoId) {
+            const loadingState = document.getElementById("loadingState");
+            const errorState = document.getElementById("errorState");
+            const detailsCard = document.getElementById("detailsCard");
+
+            loadingState.style.display = "block";
+            errorState.style.display = "none";
+            detailsCard.style.display = "none";
+
+            try {
+                // Call backend API GET /api/reports/:id using MongoDB _id with Bearer token
+                const response = await reportAPI.getReportById(mongoId);
+
+                loadingState.style.display = "none";
+
+                if (response.ok && response.data && response.data.report) {
+                    renderReport(response.data.report);
+                    detailsCard.style.display = "block";
+                } else {
+                    if (response.status === 403) {
+                        showError("Access Denied", "You are not authorized to view this report. Public users can only inspect reports they have submitted.");
+                    } else if (response.status === 404) {
+                        showError("Report Not Found", "The requested hazard report could not be found in the database.");
+                    } else {
+                        showError("Unable to Load Report", response.message || "An error occurred while retrieving report details.");
+                    }
+                }
+            } catch (err) {
+                console.error("Error loading report details:", err);
+                loadingState.style.display = "none";
+                showError("Network Error", "Unable to connect to the backend server. Please verify the API is running.");
+            }
+        }
+
+        function showError(title, text) {
+            document.getElementById("loadingState").style.display = "none";
+            document.getElementById("detailsCard").style.display = "none";
+            document.getElementById("errorTitle").textContent = title;
+            document.getElementById("errorText").textContent = text;
+            document.getElementById("errorState").style.display = "block";
+        }
+
+        function renderReport(report) {
+            document.getElementById("reportIdHeading").textContent = report.reportId || "RPT-UNKNOWN";
+
+            // Status badge
+            const statusBadge = document.getElementById("currentStatusBadge");
+            const currentStatus = report.status || "Pending";
+            statusBadge.textContent = currentStatus;
+            statusBadge.className = "badge-status status-" + currentStatus.replace(/\s+/g, "-");
+
+            // Image
+            const imgEl = document.getElementById("hazardImage");
+            imgEl.src = report.imageUrl;
+            const clLink = document.getElementById("cloudinaryLink");
+            clLink.href = report.imageUrl;
+
+            // Details
+            document.getElementById("repCategory").textContent = report.category || "-";
+            document.getElementById("repSeverity").textContent = (report.severity || "Medium") + " Priority";
+            document.getElementById("repAddress").textContent = report.address || "Address not provided";
+
+            if (report.landmark) {
+                document.getElementById("repLandmark").textContent = report.landmark;
+                document.getElementById("landmarkGroup").style.display = "block";
+            } else {
+                document.getElementById("landmarkGroup").style.display = "none";
+            }
+
+            document.getElementById("repDescription").textContent = report.description || "No description provided.";
+
+            // User Info
+            const userName = report.userId && typeof report.userId === "object" ? report.userId.name : "Citizen Contributor";
+            document.getElementById("repUserName").textContent = userName;
+
+            document.getElementById("repCreatedAt").textContent = report.createdAt
+                ? new Date(report.createdAt).toLocaleString("en-US", { dateStyle: 'medium', timeStyle: 'short' })
+                : "Recorded recently";
+
+            // Admin remarks
+            if (report.adminRemarks) {
+                document.getElementById("adminRemarksText").textContent = report.adminRemarks;
+                document.getElementById("adminRemarksBox").style.display = "block";
+            } else {
+                document.getElementById("adminRemarksBox").style.display = "none";
+            }
+
+            // Status History Timeline
+            const history = report.statusHistory || [];
+            document.getElementById("historyCount").textContent = `${history.length} update(s)`;
+            const track = document.getElementById("timelineTrack");
+            track.innerHTML = "";
+
+            if (history.length === 0) {
+                track.innerHTML = `<p style="color:#64748b; font-size:13px;">No status changes recorded yet.</p>`;
+                return;
+            }
+
+            history.forEach(item => {
+                const node = document.createElement("div");
+                node.className = "timeline-node";
+
+                const bulletClass = "bullet-" + (item.status || "Pending").replace(/\s+/g, "-");
+                const badgeClass = "status-" + (item.status || "Pending").replace(/\s+/g, "-");
+
+                const timeStr = item.updatedAt
+                    ? new Date(item.updatedAt).toLocaleString("en-US", { dateStyle: 'medium', timeStyle: 'short' })
+                    : "Recorded";
+
+                node.innerHTML = `
+                    <div class="timeline-bullet ${bulletClass}"></div>
+                    <div class="timeline-content">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                            <span class="badge-status ${badgeClass}">${escapeHtml(item.status)}</span>
+                            <small style="color:#64748b; font-size:11px;">${escapeHtml(timeStr)}</small>
+                        </div>
+                        <p style="margin:8px 0 0; font-size:13px; color:#334155;">
+                            ${escapeHtml(item.remark || "Status updated to " + item.status)}
+                        </p>
+                    </div>
+                `;
+
+                track.appendChild(node);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "smart-road-hazard-frontend",
+  "version": "1.0.0",
+  "description": "Frontend static server for Smart Road Hazard Reporting System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
