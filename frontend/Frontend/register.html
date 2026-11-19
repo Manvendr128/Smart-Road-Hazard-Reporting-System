@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Road Hazard System - Register</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <a href="home.html" class="logo">
+            <span class="logo-icon">🛣️</span>
+            <span>
+                Smart Road<br>
+                <strong>Hazard System</strong>
+            </span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="features.html">Features</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+
+        <div class="nav-buttons">
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="register.html" class="signup-btn active">Sign Up</a>
+        </div>
+    </header>
+
+    <main class="page-main">
+        <div class="auth-container signup-container">
+
+            <!-- Left Information Section -->
+            <section class="auth-info">
+
+                <a href="home.html" class="brand">
+                    <span class="brand-mark">SR</span>
+                    <span>Smart Road <strong>Hazard System</strong></span>
+                </a>
+
+                <div class="info-content">
+                    <span class="eyebrow">BE PART OF THE CHANGE</span>
+
+                    <h1>
+                        Join us in creating<br>
+                        <span>safer roads.</span>
+                    </h1>
+
+                    <p>
+                        Create your account and help bring attention
+                        to road hazards in your community.
+                    </p>
+
+                    <div class="info-points">
+                        <div class="info-item">
+                            <span class="check">✓</span>
+                            <span>Quick and simple registration</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="check">✓</span>
+                            <span>Report unsafe road conditions</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="check">✓</span>
+                            <span>Help improve community awareness</span>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="side-note">
+                    Every report can make a difference.
+                </p>
+
+            </section>
+
+            <!-- Registration Form -->
+            <section class="auth-form">
+
+                <div class="form-heading">
+                    <div class="form-symbol">+</div>
+                    <h2>Create your account</h2>
+                    <p>Fill in your details to get started.</p>
+                </div>
+
+                <!-- Form submits data to the Node.js backend -->
+                <form action="/register" method="POST" id="signupForm">
+
+                    <div class="form-group">
+                        <label for="name">Full name</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="fullName"
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="At least 8 characters"
+                            minlength="8"
+                            autocomplete="new-password"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm password</label>
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            placeholder="Enter password again"
+                            minlength="8"
+                            autocomplete="new-password"
+                            required
+                        >
+                    </div>
+
+                    <p
+                        id="errorMessage"
+                        class="error-message"
+                        role="alert"
+                        aria-live="polite"
+                    ></p>
+
+                    <button type="submit" class="auth-btn">
+                        Create Account <span>→</span>
+                    </button>
+
+                </form>
+
+                <div class="form-divider">
+                    <span>ALREADY REGISTERED?</span>
+                </div>
+
+                <p class="switch-text">
+                    Already have an account?
+                    <a href="login.html">Sign in</a>
+                </p>
+
+                <a href="home.html" class="back-link">
+                    ← Back to Home
+                </a>
+
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div>
+                <h3>Smart Road Hazard System</h3>
+                <p>
+                    Technology for safer roads and stronger communities.
+                </p>
+            </div>
+
+            <p class="copyright">
+                © 2026 Smart Road Hazard System. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Client-side password confirmation -->
+    <script>
+        const form = document.getElementById("signupForm");
+        const password = document.getElementById("password");
+        const confirmPassword = document.getElementById("confirmPassword");
+        const errorMessage = document.getElementById("errorMessage");
+
+        form.addEventListener("submit", function(event) {
+            errorMessage.textContent = "";
+
+            if (password.value !== confirmPassword.value) {
+                event.preventDefault();
+
+                errorMessage.textContent =
+                    "Your passwords do not match. Please try again.";
+
+                confirmPassword.focus();
+                return;
+            }
+
+            if (password.value.length < 8) {
+                event.preventDefault();
+
+                errorMessage.textContent =
+                    "Password must contain at least 8 characters.";
+
+                password.focus();
+            }
+        });
+    </script>
+
+</body>
+</html>
