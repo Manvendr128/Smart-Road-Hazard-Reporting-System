@@ -1,6 +1,7 @@
 
 const mongoose = require("mongoose");
 
+// Status history schema
 const statusHistorySchema = new mongoose.Schema(
   {
     status: {
@@ -35,6 +36,40 @@ const statusHistorySchema = new mongoose.Schema(
   { _id: false }
 );
 
+// Optional GeoJSON location schema
+const locationSchema = new mongoose.Schema(
+  {
+    type: {
+      type: String,
+      enum: ["Point"],
+      required: true,
+    },
+
+    coordinates: {
+      type: [Number],
+      required: true,
+
+      validate: {
+        validator: function (coordinates) {
+          return (
+            Array.isArray(coordinates) &&
+            coordinates.length === 2 &&
+            coordinates[0] >= -180 &&
+            coordinates[0] <= 180 &&
+            coordinates[1] >= -90 &&
+            coordinates[1] <= 90
+          );
+        },
+
+        message:
+          "Coordinates must be [longitude, latitude].",
+      },
+    },
+  },
+  { _id: false }
+);
+
+// Main Report Schema
 const reportSchema = new mongoose.Schema(
   {
     reportId: {
@@ -83,32 +118,13 @@ const reportSchema = new mongoose.Schema(
       required: true,
     },
 
-    // GeoJSON Point: coordinates are [longitude, latitude]
+    // Optional location coordinates for future map integration
     location: {
-      type: {
-        type: String,
-        enum: ["Point"],
-        default: "Point",
-      },
-      coordinates: {
-        type: [Number],
-        required: true,
-        validate: {
-          validator: function (coordinates) {
-            return (
-              coordinates.length === 2 &&
-              coordinates[0] >= -180 &&
-              coordinates[0] <= 180 &&
-              coordinates[1] >= -90 &&
-              coordinates[1] <= 90
-            );
-          },
-          message:
-            "Coordinates must be [longitude, latitude].",
-        },
-      },
+      type: locationSchema,
+      default: undefined,
     },
 
+    // Manual location details
     address: {
       type: String,
       trim: true,
@@ -145,11 +161,12 @@ const reportSchema = new mongoose.Schema(
       default: [],
     },
   },
+
   { timestamps: true }
 );
 
-// Supports future location-based queries.
-// This does not implement a map interface.
+// Geospatial index for future location-based queries
 reportSchema.index({ location: "2dsphere" });
 
+// Export Report model
 module.exports = mongoose.model("Report", reportSchema);
